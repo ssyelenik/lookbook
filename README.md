@@ -38,18 +38,20 @@ pip install -r requirements.txt
       2. Replace <your_api_key> and <your_api_secret> with your actual values, while your cloud name is already correctly included in the format. 
       3. Configure Cloudinary in your Django project by adding the following to your settings.py:
         ```python
-        import cloudinary
-        import cloudinary.uploader
-        import cloudinary.api
         from dotenv import load_dotenv
 
         load_dotenv()
-        Apply migrations and start the server:
-        python manage.py migrate
-        python manage.py runserver
         ```
+        
 
-5. Access the application at http://127.0.0.1:8000.
+5. Apply migrations and start the server:
+   
+   ```python
+   python manage.py migrate
+   python manage.py runserver
+   ```
+
+6. Access the application at `http://127.0.0.1:8000`.
 
 ## Contributing
 
