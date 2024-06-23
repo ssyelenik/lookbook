@@ -30,28 +30,28 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Set up Cloudinary for image uploads:
+1. Configure Cloudinary:
    1. Sign up at Cloudinary 
    2. Create a `.env` file in the project root and add the following. 
    3. Update the `.env` file with your Cloudinary credentials:
       1. Copy the API environment variable format from the [API Keys](https://console.cloudinary.com/settings/api-keys) page and paste it into your `.env` file. 
       2. Replace <your_api_key> and <your_api_secret> with your actual values, while your cloud name is already correctly included in the format. 
       3. Configure Cloudinary in your Django project by adding the following to your settings.py:
+   
         ```python
         from dotenv import load_dotenv
-
         load_dotenv()
         ```
         
 
-5. Apply migrations and start the server:
+2. Apply migrations and start the server:
    
    ```python
    python manage.py migrate
    python manage.py runserver
    ```
 
-6. Access the application at `http://127.0.0.1:8000`.
+3. Access the application at `http://127.0.0.1:8000`.
 
 ## Contributing
 
