@@ -10,7 +10,7 @@
 
 #### Installation
 
-1.  Clone the repository:
+1.  Fork and clone the repository:
 
 ```python
 git clone https://github.com/yourusername/django-lookbook.git
