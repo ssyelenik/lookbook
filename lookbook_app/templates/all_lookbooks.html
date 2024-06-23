@@ -1,0 +1,67 @@
+<!-- templates/all_lookbooks.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container first-container">
+    <div class="row">
+        <div class="col">
+            <h2>All Lookbooks</h2>
+        </div>
+        <div class="col text-right">
+            <!-- Form for filtering lookbooks by users -->
+            <form method="get">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="userFilterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Filter by Users
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userFilterDropdown" style="min-width: 150px;">
+                        <div class="form-group px-2">
+                            <!-- Select dropdown for choosing users -->
+                            <select id="userFilter" name="user_ids" class="form-control selectpicker" multiple data-live-search="true" data-selected-text-format="count > 2" data-actions-box="true">
+                                <option value="all" {% if 'all' in selected_user_ids %}selected{% endif %}>All Users</option>
+                                {% for user in users %}
+                                    <option value="{{ user.id }}" {% if user.id|stringformat:"s" in selected_user_ids %}selected{% endif %}>{{ user.username }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    {% for lookbook in lookbooks %}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body all">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ lookbook.user.profile.profile_url }}" alt="{{ lookbook.user.username }}" class="rounded-circle mr-2" style="width: 40px; height: 40px;">
+                        <h5 class="mb-0">{{ lookbook.user.username }}</h5>
+                    </div>
+                    <h5 class="card-title">{{ lookbook.title }}</h5>
+                    <p class="card-text">{{ lookbook.description }}</p>
+                    <a href="{% url 'display' lookbook.id %}" class="btn btn-primary card-btn">View</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col">
+            <p>No lookbooks found.</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // JavaScript to close dropdown when clicking outside
+    $(document).on("click", function(event){
+        var $trigger = $(".dropdown");
+        if($trigger !== event.target && !$trigger.has(event.target).length){
+            $(".dropdown-menu").slideUp("fast");
+        }            
+    });
+</script>
+{% endblock %}

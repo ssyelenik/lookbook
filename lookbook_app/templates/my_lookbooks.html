@@ -1,0 +1,89 @@
+<!-- templates/my_lookbooks.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Form for deleting selected lookbooks -->
+    <form id="deleteForm" method="POST" style="display: inline;">
+        {% csrf_token %}
+        <!-- Container for page header and action buttons -->
+        <div class="container first-container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h2 style="display: inline;">My Lookbooks</h2>
+                    <!-- Action buttons aligned to the right -->
+                    <div class="float-right">
+                        <button type="button" id="deleteSelected" class="btn btn-danger">Delete Selected</button>
+                        <a href="{% url 'create_lookbook' %}" class="btn btn-primary ml-2 align-top">Create</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- List of lookbooks -->
+        <div class="row mt-4">
+            {% for lookbook in my_lookbooks %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <!-- Checkbox to select lookbook for deletion -->
+                        <input type="checkbox" class="float-right mr-2 mt-2 check" name="lookbook_ids_{{ lookbook.id }}" value="{{ lookbook.id }}" data-lookbook-id="{{ lookbook.id }}">
+                        <div class="card-body my">
+                            <div class="card-txt">
+                                <h5 class="card-title">{{ lookbook.title }}</h5>
+                                <p class="card-text">{{ lookbook.description }}</p>
+                            </div>
+                            <div class="card-btns">
+                                <!-- View button to see details of the lookbook -->
+                                <a href="{% url 'display' lookbook_id=lookbook.id %}" class="btn btn-primary mr-2">View</a>
+                                <!-- Edit button to modify the lookbook -->
+                                <a href="{% url 'edit_lookbook' lookbook_id=lookbook.id %}" class="btn btn-secondary">Edit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <!-- Display message if no lookbooks are found -->
+                <div class="col">
+                    <p>No lookbooks found.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
+
+    <!-- JavaScript to handle deletion of selected lookbooks -->
+    <script>
+        // Event listener for delete button click
+        document.getElementById('deleteSelected').addEventListener('click', function() {
+            // Get all checked checkboxes
+            var checkboxes = document.querySelectorAll('.check:checked');
+            var lookbookIds = [];
+            checkboxes.forEach(function(checkbox) {
+                // Collect IDs of selected lookbooks
+                lookbookIds.push(checkbox.value);
+            });
+            // If any lookbooks are selected for deletion
+            if (lookbookIds.length > 0) {
+                var form = document.getElementById('deleteForm');
+                var formData = new FormData(form);
+                // Append selected lookbook IDs to form data
+                formData.append('lookbook_ids', JSON.stringify(lookbookIds));
+                // Perform fetch request to delete selected lookbooks
+                fetch('', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload(); // Reload the page after successful deletion
+                    } else {
+                        console.error('Error deleting selected lookbooks:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting selected lookbooks:', error);
+                });
+            } else {
+                console.error('No lookbooks selected for deletion.');
+            }
+        });
+    </script>
+{% endblock %}

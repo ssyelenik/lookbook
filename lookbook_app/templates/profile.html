@@ -1,0 +1,54 @@
+<!-- profile.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Page title and user information -->
+    <h1 class="first-container">User Profile</h1>
+    <div>
+        {% if request.user.profile.profile_picture %}
+            <!-- Display user's profile picture if available -->
+            <img src="{{ profile.profile_url }}" alt="Profile Picture" width="300px">
+        {% else %}
+            <!-- Display default profile picture or a placeholder image if no profile picture is available -->
+            <img src="https://res.cloudinary.com/yelenik/image/upload/v1717335704/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg" alt="Default Profile Picture">
+        {% endif %}
+        <p>Username: {{ request.user.username }}</p>
+        <p>Email: {{ request.user.email }}</p>
+        <p>Bio: {{ request.user.profile.bio }}</p>
+    </div>
+
+    <!-- Form for updating user profile -->
+    <h2>Update Profile</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            <!-- Bio field for updating user biography -->
+            {{ form.bio.label_tag }} {{ form.bio }}
+            {{ form.bio.errors }}
+        </div>
+        <div class="form-group">
+            {% if request.user.profile.profile_picture %}
+                {% with default_profile_url="https://res.cloudinary.com/yelenik/image/upload/v1717335704/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg" %}
+                    {% if request.user.profile.profile_picture.url == default_profile_url %}
+                        <!-- Upload profile picture if default or no picture exists -->
+                        <label for="id_profile_picture">Upload Profile Picture</label>
+                        <input type="file" name="profile_picture" class="form-control-file" id="id_profile_picture">
+                    {% else %}
+                        <!-- Replace current profile picture with new upload -->
+                        <p>Your current image is: <a href="{{ request.user.profile.profile_picture.url }}" target="_blank">{{ request.user.profile.profile_picture.url }}</a></p>
+                        <label for="id_profile_picture">Replace Profile Picture</label>
+                        <input type="file" name="profile_picture" class="form-control-file" id="id_profile_picture">
+                    {% endif %}
+                {% endwith %}
+            {% else %}
+                <!-- No profile picture exists -->
+                <label for="id_profile_picture">Upload Profile Picture</label>
+                <input type="file" name="profile_picture" class="form-control-file" id="id_profile_picture">
+            {% endif %}
+            {{ form.profile_image.errors }}
+        </div>
+        <!-- Button to submit profile update -->
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+{% endblock %}

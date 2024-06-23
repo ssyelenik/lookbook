@@ -1,0 +1,200 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lookbook Gallery</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .navbar {
+            background-color: #343a40; /* Dark background color */
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff; /* White text color */
+        }
+        .navbar-nav .nav-link {
+            color: #fff; /* White text color */
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ccc; /* Light gray on hover */
+        }
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 100%;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .gallery-container {
+            max-width: 1200px;
+
+
+            padding: 20px;
+        }
+        .gallery-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: -15px;
+        }
+        .gallery-col {
+            flex: 0 0 33.333%;
+            max-width: 33.333%;
+            padding: 15px;
+        }
+        .gallery-image {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            position: relative;
+        }
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+        .gallery-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .all{
+            height: 240px;
+        }
+        .my{
+            height: 200px;
+        }
+        .card-body{
+            display: flex!important;
+            flex-direction: column!important;
+        }
+        .card-text{
+            height:80px;
+        }
+        .card-btns{
+            align-self:center!important;
+        }
+        .card-btn{
+            align-self:center!important;
+            width:80px;
+        }
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .gallery-overlay h5 {
+            color: #fff;
+            font-size: 24px;
+            text-align: center;
+            margin: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-image:hover .gallery-overlay {
+            opacity: 1;
+        }
+        .gallery-image:hover .gallery-overlay h5 {
+            opacity: 1;
+        }
+        .first-container{
+            margin-top:80px;
+        }
+        .lookbook-image-container {
+        position: relative;
+        overflow: hidden;
+        margin: 10px 0;
+        }
+
+        .lookbook-image-container.portrait img {
+            width: auto;
+            height: 100%;
+        }
+
+        .lookbook-image-container.landscape img {
+            width: 100%;
+            height: auto;
+        }
+
+        .lookbook-image-container.square img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .lookbook-image-container.dark::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .lookbook-image-container.light::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .lookbook-image-container.none::before {
+            content: none;
+        }
+
+        .lookbook-image-container.none {
+            border: none;
+        }
+
+        .lookbook-image-container.solid {
+            border: 2px solid #000;
+        }
+
+        .lookbook-image-container.dashed {
+            border: 2px dashed #000;
+        }
+        .check{
+            align-self: flex-end;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

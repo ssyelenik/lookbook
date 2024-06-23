@@ -1,0 +1,32 @@
+<!-- templates/display.html -->
+
+  {% extends 'base.html' %}
+
+  {% block content %}
+<div class="container first-container">
+    <!-- Display lookbook title -->
+    <h2>{{ lookbook.title }}</h2>
+    <!-- Display lookbook description -->
+    <p>{{ lookbook.description }}</p>
+</div>
+
+<div class="container">
+<div class="gallery-container" >
+    <div class="gallery-row">
+        {% for photo in photos %}
+        <div class="gallery-col">
+            <div class="gallery-image">
+                <!-- Display transformed image -->
+                <img src="{{ photo.transformed_image }}" alt="Image" class="img-fluid">
+                <div class="gallery-overlay">
+                    <!-- Link to view in a new browser tab -->
+                  <a href="{{ photo.transformed_image }}" target="_blank"><h5>Click to View</h5></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+

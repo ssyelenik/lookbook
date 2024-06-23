@@ -1,0 +1,118 @@
+<!-- templates/edit_lookbook.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="first-container">Edit Lookbook</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="form-group">
+        <!-- Display title field -->
+        {{ form.title.label_tag }} {{ form.title }}
+        {{ form.title.errors }}
+    </div>
+    <div class="form-group">
+        <!-- Display description field -->
+        {{ form.description.label_tag }} {{ form.description }}
+        {{ form.description.errors }}
+    </div>
+
+    <h3>Upload Images</h3>
+    <div class="form-group">
+        <!-- Button to trigger image upload widget -->
+        <button type="button" id="upload_widget" class="btn btn-primary">Upload Images</button>
+        <!-- Container to display uploaded images -->
+        <div id="uploaded_images"></div>
+    </div>
+    <!-- Hidden input field to store image URLs -->
+    <input type="hidden" name="img_urls" id="img_urls" value="{{ img_urls|default_if_none:'' }}">
+
+    <h3>Image Formatting Options</h3>
+    <div class="form-group">
+        <!-- Dropdown for selecting image orientation -->
+        <label for="orientation">Orientation</label>
+        <select id="orientation" name="orientation" class="form-control mb-2">
+            <option value="portrait" {% if orientation == 'portrait' %}selected{% endif %}>Portrait</option>
+            <option value="landscape" {% if orientation == 'landscape' %}selected{% endif %}>Landscape</option>
+            <option value="square" {% if orientation == 'square' %}selected{% endif %}>Square</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <!-- Dropdown for selecting border width -->
+        <label for="borderWidth">Border Width</label>
+        <select id="borderWidth" name="borderWidth" class="form-control mb-2">
+            <option value="0px" {% if borderWidth == "0px" %}selected{% endif %}>None</option>
+            <option value="5px" {% if borderWidth == "5px" %}selected{% endif %}>5px</option>
+            <option value="10px" {% if borderWidth == "10px" %}selected{% endif %}>10px</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <!-- Dropdown for selecting border color -->
+        <label for="borderColor">Border Color</label>
+        <select id="borderColor" name="borderColor" class="form-control mb-2">
+            <option value="black" {% if borderColor == "black" %}selected{% endif %}>Black</option>
+            <option value="red" {% if borderColor == "red" %}selected{% endif %}>Red</option>
+            <option value="blue" {% if borderColor == "blue" %}selected{% endif %}>Blue</option>
+        </select>
+    </div>
+
+    <h3>Upload Overlay Image (Optional)</h3>
+    <div class="form-group">
+        <!-- Input field for overlay image -->
+        <label for="overlay_image">Overlay Image</label>
+        <input type="file" name="overlay_image" id="overlay_image" class="form-control mb-2">
+        {% if current_overlay %}
+            <!-- Display current overlay image if exists -->
+            <p>Your currently selected overlay image is '{{ current_overlay }}'.</p>
+        {% endif %}
+    </div>
+
+    <h3>Delete Images</h3>
+    <div class="form-group">
+        <!-- Checkbox options to delete selected images -->
+        <label for="selected_images">Select images to delete:</label><br>
+        <div style="display:flex; flex-wrap: wrap;">
+            {% for image in images %}
+                <div style="position: relative; margin-right: 10px; margin-bottom: 10px; width: 100px;">
+                    <input type="checkbox" id="selected_images_{{ image.id }}" name="imagesToDelete" value="{{ image.id }}" style="position: absolute; top: 5px; right: 5px;">
+                    <label for="selected_images_{{ image.id }}"><img src="{{ image.transformed_image }}" alt="Image Thumbnail" style="width: 100px;"></label>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Button to submit form -->
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+<!-- Cloudinary widget script for image uploads -->
+<script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var uploadedImages = [];
+    var myWidget = cloudinary.createUploadWidget({
+        cloudName: 'yelenik', // Replace with your Cloudinary cloud name
+        uploadPreset: 'my_preset', // Replace with your upload preset
+        multiple: true,
+        form: '#create_lookbook_form',
+        fieldName: 'image',
+        thumbnails: '#uploaded_images',
+        autoMinimize: true
+    }, (error, result) => {
+        if (!error && result && result.event === "success") {
+            uploadedImages.push(result.info.secure_url);
+            document.getElementById('img_urls').value = JSON.stringify(uploadedImages);
+            var img = document.createElement('img');
+            img.src = result.info.secure_url;
+            img.style.width = '100px';
+            img.style.margin = '5px';
+            img.classList.add('img-thumbnail');
+            //document.getElementById('uploaded_images').appendChild(img);
+        }
+    });
+
+    // Open Cloudinary widget on button click
+    document.getElementById("upload_widget").addEventListener("click", function() {
+        myWidget.open();
+    }, false);
+</script>
+{% endblock %}
