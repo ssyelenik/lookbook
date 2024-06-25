@@ -13,8 +13,8 @@
 1.  Fork and clone the repository:
 
 ```python
-git clone https://github.com/yourusername/django-lookbook.git
-cd django-lookbook
+git clone https://github.com/yourusername/lookbook.git
+cd lookbook
 ```
 
 2. Create and activate a virtual environment:

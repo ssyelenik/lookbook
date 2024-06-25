@@ -66,10 +66,6 @@ class LookbookForm(forms.ModelForm):
         model = Lookbook
         fields = ['title', 'description', 'overlay_image']
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
-
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:
@@ -94,11 +90,6 @@ class LookbookImageForm(forms.ModelForm):
 
     def save(self, commit=True, image_url=None):
         instance = super().save(commit=False)
-        if image_url:
-            instance.image = image_url
-            transformed_url = CloudinaryImage(image_url).build_url(
-                quality='auto', width=800, height=800, crop='pad', background='gen_fill:ignore-foreground_true')
-            instance.transformed_image = transformed_url
         if commit:
             instance.save()
         return instance
