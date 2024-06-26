@@ -52,7 +52,7 @@ def generate_transformation_options(lookbook):
         ]
         transformation_options['transformation'].insert(1, overlay_transformation)
 
-    # Add cscale transformation to make the width 800
+    # Add a scale transformation to make the width 800
     transformation_options['transformation'].insert(2, {'width': 800, 'crop': 'scale'})
     return transformation_options
 

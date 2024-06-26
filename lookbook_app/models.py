@@ -24,7 +24,7 @@ class Profile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = CloudinaryField('profile_pictures')
-    profile_url = models.URLField(blank=True, null=True, default='https://res.cloudinary.com/yelenik/image/upload/v1717335704/default-profile-picture-avatar-user-avatar-icon-person-icon-head-icon-profile-picture-icons-default-anonymous-user-male-and-female-businessman-photo-placeholder-social-network-avatar-portrait-free-vector.jpg')
+    profile_url = models.URLField(blank=True, null=True, default='https://res.cloudinary.com/yelenik/image/upload/avatar')
     bio = models.TextField(blank=True)
     my_lookbooks = models.ManyToManyField(Lookbook, blank=True)
 

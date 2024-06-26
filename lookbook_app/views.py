@@ -68,12 +68,10 @@ def profile(request):
             messages.error(request, 'Please correct the error below.')
     else:
         form = ProfileUpdateForm(instance=profile)
-    my_lookbooks = profile.my_lookbooks.all()
     print(profile.profile_url)
     return render(request, 'profile.html', {
         'form': form,
-        'profile': profile,
-        'my_lookbooks': my_lookbooks
+        'profile': profile
     })
 
 
