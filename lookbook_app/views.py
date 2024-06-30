@@ -205,16 +205,19 @@ def my_lookbooks(request):
     """
     Lists the current user's lookbooks and handles deletion of selected lookbooks.
 
-    POST method:
-    - Deletes selected lookbooks based on IDs received from POST data.
-    - Redirects to 'my_lookbooks' page after deletion.
-
     GET method:
     - Retrieves or creates Profile instance for the current user.
     - Fetches all lookbooks associated with the user's profile.
     - Renders 'my_lookbooks.html' template with the user's lookbooks.
 
+    POST method:
+    - Deletes selected lookbooks based on IDs received from POST data.
+    - Redirects to 'my_lookbooks' page after deletion.
+
     """
+
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+    my_lookbooks = profile.my_lookbooks.all().order_by('title')
 
     if request.method == 'POST':
         temp_ids=request.POST.getlist('lookbook_ids')
@@ -225,9 +228,7 @@ def my_lookbooks(request):
         
         Lookbook.objects.filter(id__in=lookbook_ids).delete()
         return redirect('my_lookbooks')
-    
-    profile, _ = Profile.objects.get_or_create(user=request.user)
-    my_lookbooks = profile.my_lookbooks.all().order_by('title')
+
     return render(request, 'my_lookbooks.html', {'my_lookbooks': my_lookbooks})
 
 # View for listing all lookbooks    
