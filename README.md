@@ -31,7 +31,7 @@ pip install -r requirements.txt
 ```
 
 4. Configure Cloudinary:
-   1. Sign up at Cloudinary 
+   1. Sign up at [Cloudinary](http://cloudinary.com/ip/sy) 
    2. Create a `.env` file in the project root and add the following. 
    3. Update the `.env` file with your Cloudinary credentials:
       1. Copy the API environment variable format from the [API Keys](https://console.cloudinary.com/settings/api-keys) page and paste it into your `.env` file. 
